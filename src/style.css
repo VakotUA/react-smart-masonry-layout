@@ -1,0 +1,26 @@
+.masonry-container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.masonry-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  flex: 1;
+}
+
+.masonry-item {
+  width: 100%;
+}
+
+.masonry-virtual-container {
+  position: absolute;
+  left: -9999px;
+  top: -9999px;
+  visibility: hidden;
+  width: 100px;
+}
