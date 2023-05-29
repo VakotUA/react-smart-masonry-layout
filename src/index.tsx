@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import './style.css'
 
@@ -32,7 +32,7 @@ const Masonry: React.FC<Props> = ({
   const [virtualItemsHeight, setVirtualItemsHeight] = useState<number[]>([])
 
   /**
-   * Setup containerWidth updates listener (updates every 100ms)
+   * Setup containerWidth updates listener (updates every 300ms)
    */
   useEffect(() => {
     const handleResize = () => {
@@ -41,7 +41,7 @@ const Masonry: React.FC<Props> = ({
       )
     }
 
-    const resizeTimeout = window.setInterval(handleResize, 100)
+    const resizeTimeout = window.setInterval(handleResize, 300)
 
     return () => {
       clearTimeout(resizeTimeout)
@@ -76,7 +76,7 @@ const Masonry: React.FC<Props> = ({
   /**
    * Update virtualItemsHeight
    */
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!virtualData.length) return
 
     const newVirtualItemsHeight: number[] = [
@@ -138,7 +138,7 @@ const Masonry: React.FC<Props> = ({
 
   return (
     <React.Fragment>
-      <div className="masonry-virual-container">
+      <div className="masonry-virtual-container">
         {virtualData.map((item, index) => (
           <div
             key={index}
