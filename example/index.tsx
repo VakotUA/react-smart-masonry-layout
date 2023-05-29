@@ -45,12 +45,31 @@ const App = () => {
     2500: 10,
   }
 
+  const [data, setData] = React.useState(initialData)
+
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setData(prev => {
+        const additionalData: IData[] = Array(8)
+          .fill(null)
+          .map((_, index) => ({
+            value: Math.random() * (500 - 200) + 200,
+            index: index + prev.length,
+          }))
+
+        return [...prev, ...additionalData]
+      })
+    }, 3000)
+
+    return () => clearInterval(interval)
+  }, [])
+
   return (
     <Masonry
       gutter={10}
       breakpoints={breakpoint}
       style={masonryStyle}
-      source={initialData}
+      source={data}
       render={childRender}
       className="masonry-layout"
     />
