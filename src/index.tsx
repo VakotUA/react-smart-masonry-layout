@@ -77,16 +77,16 @@ const Masonry: React.FC<Props> = ({
    * Update virtualItemsHeight
    */
   useEffect(() => {
-    if (!virtualData.length) return
+    if (!virtualData.length || !virtualRefs.current.length) return
 
-    const newVirtualItemsHeight: number[] = [
-      ...virtualRefs.current.map(ref => ref?.offsetHeight || 0),
-    ]
+    const newVirtualItemsHeight: number[] = virtualData.map(
+      (_, index) => virtualRefs.current[index]?.offsetHeight || 0
+    )
 
     setVirtualItemsHeight(newVirtualItemsHeight)
     setVirtualData([])
     virtualRefs.current = []
-  }, [virtualData])
+  }, [virtualData, virtualRefs.current])
 
   /**
    * Update data

@@ -10,15 +10,28 @@ interface IData {
 }
 
 const App = () => {
-  const masonryStyle = { maxWidth: '2800px', marginInline: 'auto' }
-
-  // any[]
-  const initialData: IData[] = Array(32)
-    .fill(null)
-    .map((_, index) => ({
-      value: Math.random() * (500 - 200) + 200,
-      index,
-    }))
+  const headerStyle: React.CSSProperties = {
+    width: '100%',
+    height: 64,
+    position: 'sticky',
+    left: 0,
+    top: 0,
+    backgroundColor: 'gray',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 10,
+  }
+  const buttonStyle: React.CSSProperties = {
+    width: 72,
+    height: 36,
+    borderRadius: 6,
+  }
+  const masonryStyle: React.CSSProperties = {
+    maxWidth: '2800px',
+    marginInline: 'auto',
+    padding: 10,
+  }
 
   // (item: any) => React.ReactNode
   const childRender = (item: IData) => (
@@ -45,34 +58,45 @@ const App = () => {
     2500: 10,
   }
 
-  const [data, setData] = React.useState(initialData)
+  const getData = (length: number): IData[] => {
+    return Array(length)
+      .fill(null)
+      .map((_, index) => ({
+        value: Math.random() * (500 - 200) + 200,
+        index: index + data.length,
+      }))
+  }
+
+  const [data, setData] = React.useState<IData[]>([])
 
   React.useEffect(() => {
-    const interval = setInterval(() => {
-      setData(prev => {
-        const additionalData: IData[] = Array(8)
-          .fill(null)
-          .map((_, index) => ({
-            value: Math.random() * (500 - 200) + 200,
-            index: index + prev.length,
-          }))
-
-        return [...prev, ...additionalData]
-      })
-    }, 3000)
-
-    return () => clearInterval(interval)
+    setData(getData(16))
   }, [])
 
+  const handleAdd = () => setData(prev => [...prev, ...getData(8)])
+  const handleClear = () => setData([])
+
   return (
-    <Masonry
-      gutter={10}
-      breakpoints={breakpoint}
-      style={masonryStyle}
-      source={data}
-      render={childRender}
-      className="masonry-layout"
-    />
+    <React.Fragment>
+      <header style={headerStyle}>
+        <button style={buttonStyle} onClick={handleAdd}>
+          Add
+        </button>
+        |
+        <button style={buttonStyle} onClick={handleClear}>
+          Clear
+        </button>
+      </header>
+
+      <Masonry
+        gutter={10}
+        breakpoints={breakpoint}
+        style={masonryStyle}
+        source={data}
+        render={childRender}
+        className="masonry-layout"
+      />
+    </React.Fragment>
   )
 }
 
