@@ -32,3 +32,9 @@ jobs:
       #   uses: cypress-io/github-action@v5
       #   with:
       #     component: true
+
+      # TODO: test this out
+      - name: Publish
+        run: yarn publish
+        env:
+          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
