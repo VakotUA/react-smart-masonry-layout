@@ -1,8 +1,7 @@
-import * as React from 'react'
-import * as ReactDOM from 'react-dom'
-import Masonry from '../src'
-
-import './style.css'
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import Masonry from '../src' // replace with "import Masonry from 'react-smart-masonry-layout'"
+import './styles.css'
 
 interface IData {
   value: number
@@ -23,30 +22,20 @@ const App = () => {
     gap: 10,
   }
   const buttonStyle: React.CSSProperties = {
-    width: 72,
+    minWidth: 72,
     height: 36,
     borderRadius: 6,
   }
-  const masonryStyle: React.CSSProperties = {
-    maxWidth: '2800px',
-    marginInline: 'auto',
-    padding: 10,
-  }
-
   // (item: any) => React.ReactNode
   const childRender = (item: IData) => (
-    <div
-      className="render-child"
-      key={item.index}
-      style={{ height: item.value }}
-    >
+    <div className="render-child" style={{ height: item.value }}>
       {item.index}
     </div>
   )
 
   // key:   container width in px breakpoint
   // value: collumns count
-  const breakpoint = {
+  const breakpoints = {
     300: 2,
     600: 3,
     900: 4,
@@ -58,22 +47,18 @@ const App = () => {
     2500: 10,
   }
 
-  const getData = (length: number): IData[] => {
+  const getData = (length: number, startIndex: number): IData[] => {
     return Array(length)
       .fill(null)
       .map((_, index) => ({
         value: Math.random() * (500 - 200) + 200,
-        index: index + data.length,
+        index: index + startIndex,
       }))
   }
 
-  const [data, setData] = React.useState<IData[]>([])
+  const [data, setData] = React.useState<IData[]>(getData(16, 0))
 
-  React.useEffect(() => {
-    setData(getData(16))
-  }, [])
-
-  const handleAdd = () => setData(prev => [...prev, ...getData(8)])
+  const handleAdd = () => setData((prev) => [...prev, ...getData(8, prev.length)])
   const handleClear = () => setData([])
 
   return (
@@ -90,8 +75,7 @@ const App = () => {
 
       <Masonry
         gutter={10}
-        breakpoints={breakpoint}
-        style={masonryStyle}
+        breakpoints={breakpoints}
         source={data}
         render={childRender}
         className="masonry-layout"
@@ -100,6 +84,4 @@ const App = () => {
   )
 }
 
-ReactDOM.render(<App />, document.getElementById('root'))
-
-export default App
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(<App />)

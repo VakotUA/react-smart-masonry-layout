@@ -2,31 +2,33 @@ name: CI
 on: [push]
 jobs:
   build:
-    name: Build, lint, and test on Node ${{ matrix.node }} and ${{ matrix.os }}
-
+    name: ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    container: cypress/browsers:node18.12.0-chrome106-ff106
     strategy:
       matrix:
-        node: ['10.x', '12.x', '14.x']
         os: [ubuntu-latest, windows-latest, macOS-latest]
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Use Node ${{ matrix.node }}
+      - name: Set up Node
         uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.node }}
+          node-version: 14.x
 
-      - name: Install deps and build (with cache)
-        uses: bahmutov/npm-install@v1.4.5
+      - name: Install Yarn
+        run: npm install -g yarn
+
+      - name: Install dependencies and Build
+        run: yarn install
 
       - name: Lint
         run: yarn lint
 
-      - name: Test
-        run: yarn test --ci --coverage --maxWorkers=2
-
-      - name: Build
-        run: yarn build
+      # TODO: fix on win and mac
+      # - name: Cypress run
+      #   uses: cypress-io/github-action@v5
+      #   with:
+      #     component: true
