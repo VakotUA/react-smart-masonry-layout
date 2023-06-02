@@ -2,7 +2,7 @@
   "author": "VakotUA",
   "name": "react-smart-masonry-layout",
   "license": "MIT",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "Smart Masonry layout component for React",
   "main": "dist/index.cjs.js",
   "module": "dist/index.es.js",
