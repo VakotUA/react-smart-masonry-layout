@@ -80,13 +80,6 @@ const Masonry = <T,>({
   }, [breakpoints])
 
   /**
-   * Prepare virtualData
-   */
-  useEffect(() => {
-    setVirtualData(source)
-  }, [columnsCount, source])
-
-  /**
    * Prepare columns and clear virtualData
    */
   useEffect(() => {
@@ -119,6 +112,13 @@ const Masonry = <T,>({
 
     updateColumns()
   }, [virtualData, columnsCount])
+
+  /**
+   * Prepare virtualData
+   */
+  useEffect(() => {
+    setVirtualData(source)
+  }, [columnsCount, source])
 
   return (
     <React.Fragment>
